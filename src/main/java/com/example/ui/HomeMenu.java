@@ -76,38 +76,30 @@ public class HomeMenu {
         switch (InputChoix) {
             case 1:
                 this.tellerMenu.createClient();
-                System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
-                this.scanner.nextLine();
                 break;
             case 3:
                 this.tellerMenu.viewAllClients();
-                System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
-                this.scanner.nextLine();
                 break;
             case 4:
                 this.tellerMenu.closeClient();
-                System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
-                this.scanner.nextLine();
                 break;
             case 5:
                 this.tellerMenu.createAccount();
-                System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
-                this.scanner.nextLine();
                 break;
             case 6:
                 this.tellerMenu.getAllAccounts();
-                System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
-                this.scanner.nextLine();
                 break;
             case 7:
                 this.tellerMenu.closeAccount();
-                System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
-                this.scanner.nextLine();
                 break;
             case 8 :
                 this.tellerMenu.Deposit();
-                System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
-                this.scanner.nextLine();
+                break;
+            case 9 :
+                this.tellerMenu.Withdraw();
+                break;
+            case 10 :
+                this.tellerMenu.Transfer();
                 break;
 
         }

@@ -11,9 +11,17 @@ public class TransactionService {
     {
         this.transactionRepository = transactionRepository;
     }
+    public TransactionService()
+    {
 
+    }
 
     public Transaction createTransactionDeposit(Transaction transaction)
+    {
+        return this.transactionRepository.createTransaction(transaction);
+    }
+
+    public Transaction createTransactionTransfer(Transaction transaction)
     {
         return this.transactionRepository.createTransaction(transaction);
     }

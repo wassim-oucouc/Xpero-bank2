@@ -2,6 +2,7 @@ package com.example.ui;
 
 import com.example.controller.AccountController;
 import com.example.controller.ClientController;
+import com.example.controller.CreditController;
 import com.example.controller.TransactionController;
 import com.example.dto.AccountDTO;
 import com.example.dto.ClientDTO;
@@ -31,8 +32,9 @@ public class TellerMenu {
     public ClientMapper clientMapper;
     public AccountMapper accountMapper;
     public TransactionController transactionController;
+    public CreditController creditController;
 
-    public TellerMenu(ClientController clientController, Scanner scanner, AccountService accountService, AccountController accountController, ClientService clientService, ClientMapper clientMapper, AccountMapper accountMapper,TransactionController transactionController) {
+    public TellerMenu(ClientController clientController, Scanner scanner, AccountService accountService, AccountController accountController, ClientService clientService, ClientMapper clientMapper, AccountMapper accountMapper, TransactionController transactionController,CreditController creditController) {
         this.clientController = clientController;
         this.scanner = scanner;
         this.accountService = accountService;
@@ -41,6 +43,7 @@ public class TellerMenu {
         this.clientMapper = clientMapper;
         this.accountMapper = accountMapper;
         this.transactionController = transactionController;
+        this.creditController = creditController;
     }
 
 
@@ -73,6 +76,8 @@ public class TellerMenu {
         } else {
             System.out.println("client not created");
         }
+        System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
+        this.scanner.nextLine();
     }
 
     public void viewAllClients() {
@@ -86,13 +91,13 @@ public class TellerMenu {
             System.out.printf("%-5s %-15s %-15s %-20s %-15s %-20s %-10.2f%n", client.getId(), client.getName(), client.getLastname(), client.getEmail(), client.getAddress(), client.getCin(), client.getSallaire());
 
         }
+        System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
+        this.scanner.nextLine();
     }
 
     public void createAccount() {
         String CIN;
         do {
-
-
             System.out.println("Entrer CIN Client :");
             CIN = this.scanner.nextLine();
             if (this.clientService.getClientByCin(CIN) == null) {
@@ -133,13 +138,13 @@ public class TellerMenu {
         System.out.println("compte bien créer!");
 
         System.out.println("numero compte client : " + account.getId());
+        System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
+        this.scanner.nextLine();
     }
 
     public void closeClient() {
         String CIN;
         do {
-
-
             System.out.println("Entrer CIN Client :");
             CIN = this.scanner.nextLine();
             if (this.clientService.getClientByCin(CIN) == null) {
@@ -152,6 +157,8 @@ public class TellerMenu {
         if (close != null) {
             System.out.println("client closed success");
         }
+        System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
+        this.scanner.nextLine();
 
     }
 
@@ -176,7 +183,8 @@ public class TellerMenu {
                     account.getClient().getId()
             );
         }
-
+        System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
+        this.scanner.nextLine();
 
 
     }
@@ -188,20 +196,21 @@ public class TellerMenu {
             System.out.println("Entrer Numero Compte Pour La Fermeture :");
             accountNumber = this.scanner.nextLine();
             this.accountService.checkAccountExists(accountNumber);
-            if(this.accountService.checkAccountExists(accountNumber) == false)
-            {
+            if (this.accountService.checkAccountExists(accountNumber) == false) {
                 System.out.println("Ce Compte N'existe Pas!");
             }
         } while (this.accountService.checkAccountExists(accountNumber) == false);
         this.accountController.closeAccount(accountNumber);
         System.out.println("compte bien fermer");
+        System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
+        this.scanner.nextLine();
 
 
     }
 
 
-    public void Deposit(){
-        System.out.println("Deposit Argent");
+    public void Deposit() {
+        System.out.println("------- Deposit Argent -------");
         String accountNumber;
         do {
 
@@ -211,13 +220,96 @@ public class TellerMenu {
         } while (this.accountService.checkAccountExists(accountNumber) == null);
         System.out.println("Entrer Montant :");
         BigDecimal montant = this.scanner.nextBigDecimal();
-        this.accountController.depositArgent(accountNumber,montant);
+        this.accountController.depositArgent(accountNumber, montant);
         Account account = this.accountService.getAccountByNumber(accountNumber);
         AccountDTO accountDTO = AccountMapper.TODTO(account);
-        TransactionDTO transactionDTO = new TransactionDTO(montant,AccountMapper.TODTO(this.accountService.getAccountByNumber(accountNumber)),AccountMapper.TODTO(this.accountService.getAccountByNumber(accountNumber)), TransactionType.valueOf("DEPOSIT"),LocalDateTime.now(),LocalDateTime.now());
+        TransactionDTO transactionDTO = new TransactionDTO(montant, AccountMapper.TODTO(this.accountService.getAccountByNumber(accountNumber)), AccountMapper.TODTO(this.accountService.getAccountByNumber(accountNumber)), TransactionType.valueOf("DEPOSIT"), LocalDateTime.now(), LocalDateTime.now());
         this.transactionController.createTransaction(transactionDTO);
         System.out.println("montant bien deposé");
+        System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
+        this.scanner.nextLine();
+    }
 
+    public void Withdraw() {
+        System.out.println("------- Withdraw Argent -------");
+        String accountNumber;
+        do {
+            System.out.println("Entrer Numero Compte Client :");
+            accountNumber = this.scanner.nextLine();
+            this.accountService.checkAccountExists(accountNumber);
+        } while (this.accountService.checkAccountExists(accountNumber) == null);
+        Boolean check;
+        BigDecimal montant;
+        do {
+            System.out.println("Entrer Montant :");
+            montant = this.scanner.nextBigDecimal();
+            check = this.accountService.checkBalanceAccount(montant, accountNumber);
+            if (!check) {
+                System.out.println("montant insuffisant avec votre solde!");
+            }
+        } while (!check);
+        this.accountController.WithdrawArgent(accountNumber, montant);
+        System.out.println("Withdraw a eté bien efféctuer");
+        System.out.println("Vous Voulez Revenir Menu Principale ? Tapez Y");
+        this.scanner.nextLine();
+    }
+
+    public void Transfer() {
+        System.out.println("------- Transfer Argent -------");
+        System.out.println("Choisi votre Type Transfer :");
+        System.out.println("1 : TransferIn");
+        System.out.println("2 : TransferOut");
+        int inputChoix = scanner.nextInt();
+        switch (inputChoix) {
+            case 1:
+                Boolean check1;
+                String accountNumberDebit;
+                String accountNumberDestinataire;
+                do {
+                    System.out.println("Entrer Numéro Compte Client Debité :");
+                    accountNumberDebit = this.scanner.nextLine();
+                    check1 = this.accountService.checkAccountExists(accountNumberDebit);
+                } while (!check1);
+                Boolean check2;
+                do {
+                    System.out.println("Entrer Numéro Compte Client Destinataire :");
+                    accountNumberDestinataire = this.scanner.nextLine();
+                    check2 = this.accountService.checkAccountExists(accountNumberDestinataire);
+                } while (!check2);
+                Boolean checkAccountBalance;
+                BigDecimal montant;
+                do {
+                    System.out.println("Entrer Montant :");
+                    montant = this.scanner.nextBigDecimal();
+                    checkAccountBalance = this.accountService.checkBalanceAccount(montant, accountNumberDebit);
+                }
+                while (!checkAccountBalance);
+                Account accountdebit = this.accountService.getAccountByNumber(accountNumberDebit);
+                Account accountDestinataire = this.accountService.getAccountByNumber(accountNumberDestinataire);
+                AccountDTO accountdebitDTO = AccountMapper.TODTO(accountdebit);
+                AccountDTO accountDestinataireDTO = AccountMapper.TODTO(accountDestinataire);
+                TransactionDTO transactionDTO = new TransactionDTO(montant, accountdebitDTO, accountDestinataireDTO, TransactionType.valueOf("TRANSFERIN"), LocalDateTime.now(), LocalDateTime.now());
+                this.accountController.TransferArgent(accountNumberDebit, accountNumberDestinataire, montant, transactionDTO);
+                break;
+            case 2:
+
+                break;
+
+        }
+    }
+
+    public void creditApplication() {
+        System.out.println("------- Credit Application -------");
+        Boolean CheckAccountCredit;
+        do {
+            System.out.println("Entrer Numero Compte Client :");
+            String accountNumber = this.scanner.nextLine();
+            CheckAccountCredit = this.accountService.checkAccountTypeByNumber(accountNumber);
+            if(!CheckAccountCredit)
+            {
+                System.out.println("Merci de Fournir un compte Credit");
+            }
+        } while (!CheckAccountCredit);
 
 
 

@@ -165,6 +165,29 @@ public class InMemoryAccountRepository implements AccountRepository {
         }
     }
 
+    public Boolean checkAccountTypeByNumber(String account_number)
+    {
+        try
+        {
+            String sqlQuery = "SELECT * FROM accounts WHERE type_id = 1 AND id = ?";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1,account_number);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public Boolean checkAccountExists(String account_number) {
         try {
             String sqlQuery = "SELECT * FROM accounts WHERE id = ?";
@@ -180,6 +203,31 @@ public class InMemoryAccountRepository implements AccountRepository {
             throw new RuntimeException(e.getMessage());
         }
     }
+    public BigDecimal getBalanceByAccountNumber(String accont_number)
+    {
+        try
+        {
+            String sqlQuery = "SELECT solde FROM accounts where id = ?";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1,accont_number);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next())
+            {
+                return resultSet.getBigDecimal("solde");
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 
     public Boolean addBalanceByIdAccount(String account_id, BigDecimal solde) {
         try {
@@ -194,6 +242,31 @@ public class InMemoryAccountRepository implements AccountRepository {
                 return false;
             }
         } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public Boolean subBalanceByIdAccount(String account_id,BigDecimal montant)
+    {
+        try
+        {
+            String sqlQuery = "UPDATE accounts set solde = solde - ? WHERE id = ?";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
+            preparedStatement.setBigDecimal(1,montant);
+            preparedStatement.setString(2,account_id);
+            int row = preparedStatement.executeUpdate();
+            if(row > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -229,5 +302,6 @@ public class InMemoryAccountRepository implements AccountRepository {
             throw new RuntimeException(e.getMessage());
         }
     }
+
 
 }
