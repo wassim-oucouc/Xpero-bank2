@@ -44,16 +44,16 @@ public class InMemoryTransactionRepository implements TransactionRepository {
     }
     public Transaction createTransaction(Transaction transaction)
     {
+        System.out.println(transaction.toString());
 
         try
         {
-            String sqlQuery = "INSERT INTO transactions(id,amount,transfer_in_account_id,transfer_out_account_id,type_id,created_at,updated_at) VALUES(?,?,?,?,?,?,?)";
+            String sqlQuery = "INSERT INTO transactions(amount,transfer_in_account_id,transfer_out_account_id,type_id) VALUES(?,?,?,?)";
             PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
-            preparedStatement.setString(1,transaction.getId().toString());
-            preparedStatement.setBigDecimal(2,transaction.getAmount());
-            preparedStatement.setString(3,transaction.getTransferIn().getId());
-            preparedStatement.setString(4,transaction.getTransferOut().getId());
-            preparedStatement.setInt(5,this.getIdByTypeString(transaction.getType().name()));
+            preparedStatement.setBigDecimal(1,transaction.getAmount());
+            preparedStatement.setString(2,transaction.getTransferIn().getId());
+            preparedStatement.setString(3,transaction.getTransferOut().getId());
+            preparedStatement.setInt(4,this.getIdByTypeString(transaction.getType().name()));
          int row =    preparedStatement.executeUpdate();
          if(row > 0)
          {

@@ -113,6 +113,7 @@ CREATE TABLE Credits(
                         taux FLOAT NOT NULL,
                         fee_rule_id INTEGER,
                         justification TEXT,
+                        is_active BOOLEAN DEFAULT FALSE,
                         credit_type_id INTEGER NOT NULL,
                         account_id UUID NOT NULL,
                         status_id INTEGER NOT NULL,

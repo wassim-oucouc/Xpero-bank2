@@ -19,4 +19,7 @@ public interface AccountRepository {
     public Boolean checkAccountExists(String account_number);
     public Boolean addBalanceByIdAccount(String account_id, BigDecimal solde);
     public Account getAccountByNumber(String number);
+    public BigDecimal getBalanceByAccountNumber(String accont_number);
+    public Boolean subBalanceByIdAccount(String account_id,BigDecimal montant);
+    public Boolean checkAccountTypeByNumber(String account_number);
 }

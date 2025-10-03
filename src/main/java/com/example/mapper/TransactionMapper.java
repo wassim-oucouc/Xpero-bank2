@@ -9,9 +9,10 @@ public class TransactionMapper {
     public AccountMapper accountMapper;
 
 
-    public TransactionMapper(AccountMapper accountMapper)
+    public TransactionMapper(AccountMapper accountMapper,Fee_ruleMapper feeRuleMapper)
     {
         this.accountMapper = accountMapper;
+        this.feeRuleMapper = feeRuleMapper;
     }
 
     public TransactionMapper()
@@ -31,6 +32,7 @@ public class TransactionMapper {
         transaction.setId(transactionDTO.getId());
         transaction.setAmount(transactionDTO.getAmount());
         transaction.setStatus(transactionDTO.getStatus());
+        transaction.setType(transactionDTO.getType());
         transaction.setTransferIn(this.accountMapper.ToEntity(transactionDTO.getTransferIn()));
         transaction.setTransferOut(this.accountMapper.ToEntity(transactionDTO.getTransferOut()));
         transaction.setCreatedAt(transactionDTO.getCreatedAt());
