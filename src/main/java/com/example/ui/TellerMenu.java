@@ -15,6 +15,7 @@ import com.example.mapper.AccountMapper;
 import com.example.mapper.ClientMapper;
 import com.example.service.AccountService;
 import com.example.service.ClientService;
+import com.example.service.CreditService;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -33,8 +34,9 @@ public class TellerMenu {
     public AccountMapper accountMapper;
     public TransactionController transactionController;
     public CreditController creditController;
+    public CreditService creditService;
 
-    public TellerMenu(ClientController clientController, Scanner scanner, AccountService accountService, AccountController accountController, ClientService clientService, ClientMapper clientMapper, AccountMapper accountMapper, TransactionController transactionController,CreditController creditController) {
+    public TellerMenu(ClientController clientController, Scanner scanner, AccountService accountService, AccountController accountController, ClientService clientService, ClientMapper clientMapper, AccountMapper accountMapper, TransactionController transactionController,CreditController creditController,CreditService creditService) {
         this.clientController = clientController;
         this.scanner = scanner;
         this.accountService = accountService;
@@ -44,6 +46,7 @@ public class TellerMenu {
         this.accountMapper = accountMapper;
         this.transactionController = transactionController;
         this.creditController = creditController;
+        this.creditService = creditService;
     }
 
 
@@ -189,7 +192,7 @@ public class TellerMenu {
 
     }
 
-    public void closeAccount() {
+    public void closeAccount(){
         System.out.println("--------- La Fermeture Compte Client ---------");
         String accountNumber;
         do {
@@ -301,17 +304,19 @@ public class TellerMenu {
     public void creditApplication() {
         System.out.println("------- Credit Application -------");
         Boolean CheckAccountCredit;
+        String accountNumber;
         do {
             System.out.println("Entrer Numero Compte Client :");
-            String accountNumber = this.scanner.nextLine();
+            accountNumber = this.scanner.nextLine();
             CheckAccountCredit = this.accountService.checkAccountTypeByNumber(accountNumber);
-            if(!CheckAccountCredit)
-            {
+            if (!CheckAccountCredit) {
                 System.out.println("Merci de Fournir un compte Credit");
             }
         } while (!CheckAccountCredit);
-
-
+        if (creditService.checkCreditLate(accountNumber));
+        {
+            System.out.println("Demande Credit Refusé");
+        }
 
 
     }
