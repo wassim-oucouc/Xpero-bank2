@@ -19,4 +19,9 @@ public class CreditService {
     {
         return this.creditRepository.createCredit(credit);
     }
+
+    public Boolean checkCreditLate(String account_id)
+    {
+        return this.creditRepository.checkCreditLate(account_id);
+    }
 }

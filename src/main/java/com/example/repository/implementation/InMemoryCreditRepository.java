@@ -6,6 +6,7 @@ import com.example.repository.CreditRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class InMemoryCreditRepository implements CreditRepository {
@@ -74,9 +75,20 @@ public class InMemoryCreditRepository implements CreditRepository {
 
     public Boolean checkCreditLate(String account_id)
     {
-        try
-        {
-            String sqlQuery = "SELECT * FROM ";
+        try {
+            String sqlQuery = "SELECT * FROM credits WHERE account_id = ? AND status_id = 2";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1, account_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         catch (SQLException e)
         {
