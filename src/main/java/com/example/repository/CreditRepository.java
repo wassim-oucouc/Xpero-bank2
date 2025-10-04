@@ -9,4 +9,5 @@ public interface CreditRepository {
     public Credit createCredit(Credit credit);
     public Boolean checkCreditLate(String account_id);
     public BigDecimal calculateTotalMonthlyAmountByAccount(String account_id);
+    public Boolean acceptCreditByAccountId(String account_id);
 }

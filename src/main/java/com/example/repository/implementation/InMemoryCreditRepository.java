@@ -119,4 +119,27 @@ public class InMemoryCreditRepository implements CreditRepository {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public Boolean acceptCreditByAccountId(String account_id)
+    {
+        try
+        {
+            String sqlQuery = "UPDATE credits set is_active = true where account_id = ?";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1,account_id);
+            int row = preparedStatement.executeUpdate();
+            if(row > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }
