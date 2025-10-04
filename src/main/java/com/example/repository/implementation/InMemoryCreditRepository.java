@@ -4,6 +4,7 @@ import com.example.config.DatabaseConnection;
 import com.example.entity.Credit;
 import com.example.repository.CreditRepository;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,22 +38,22 @@ public class InMemoryCreditRepository implements CreditRepository {
     {
         try
         {
-            String sqlQuery = "INSERT INTO credits(amount,duree,taux,fee_rule_id,justification,credit_type_id,account_id,status_id,created_at,updated_at) values(?,?,?,?,?,?,?,?,?)";
+            String sqlQuery = "INSERT INTO credits(amount,duree,monthlyamount,justification,credit_type_id,account_id,status_id,created_at,updated_at) values(?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
             preparedStatement.setBigDecimal(1,credit.amount);
             preparedStatement.setInt(2,credit.getDuree());
-            preparedStatement.setFloat(3,credit.getTaux());
-            preparedStatement.setInt(4,credit.getFeeRule().getId());
-            preparedStatement.setString(5,credit.getJustification());
+            preparedStatement.setBigDecimal(3,credit.getMonthlyamount());
+            preparedStatement.setString(4,credit.getJustification());
             if(credit.getCreditType().name().equals("SIMPLE"))
             {
-                preparedStatement.setInt(6,1);
+                preparedStatement.setInt(5,1);
             }
             else
             {
-                preparedStatement.setInt(6,2);
+                preparedStatement.setInt(5,2);
             }
-            preparedStatement.setString(7,credit.getAccount().getId());
+            preparedStatement.setString(6,credit.getAccount().getId());
+            preparedStatement.setInt(7,1);
             preparedStatement.setTimestamp(8,credit.getCreated_at());
             preparedStatement.setTimestamp(9,credit.getUpdated_at());
             int row = preparedStatement.executeUpdate();
@@ -89,6 +90,29 @@ public class InMemoryCreditRepository implements CreditRepository {
             {
                 return false;
             }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public BigDecimal calculateTotalMonthlyAmountByAccount(String account_id)
+    {
+        try
+        {
+            String sqlQuery = "SELECT COUNT(monthlyamount * 1.005) AS total FROM credits WHERE account_id = ?";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1,account_id);
+           ResultSet resultSet =  preparedStatement.executeQuery();
+           if(resultSet.next())
+           {
+               return resultSet.getBigDecimal("total");
+           }
+           else
+           {
+               return null;
+           }
         }
         catch (SQLException e)
         {

@@ -66,4 +66,9 @@ public class AccountService {
     {
         return this.accountRepository.checkAccountTypeByNumber(account_number);
     }
+
+    public Integer getIdClientByAccountId(String account_id)
+    {
+        return this.accountRepository.getIdClientByAccountId(account_id);
+    }
 }

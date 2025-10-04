@@ -101,6 +101,9 @@ public class HomeMenu {
             case 10 :
                 this.tellerMenu.Transfer();
                 break;
+            case 11 :
+                this.tellerMenu.creditApplication();
+                break;
 
         }
         } while (InputChoix != 13);
@@ -112,7 +115,9 @@ public class HomeMenu {
     }
 
     public void adminMenu() {
-
+        this.tellerMenu();
+        this.managerMenu();
+        this.auditorMenu();
     }
 
     public void auditorMenu() {

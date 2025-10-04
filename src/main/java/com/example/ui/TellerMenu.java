@@ -6,10 +6,13 @@ import com.example.controller.CreditController;
 import com.example.controller.TransactionController;
 import com.example.dto.AccountDTO;
 import com.example.dto.ClientDTO;
+import com.example.dto.CreditDTO;
 import com.example.dto.TransactionDTO;
 import com.example.entity.Account;
 import com.example.entity.Client;
 import com.example.enums.AccountType;
+import com.example.enums.CreditStatus;
+import com.example.enums.CreditType;
 import com.example.enums.TransactionType;
 import com.example.mapper.AccountMapper;
 import com.example.mapper.ClientMapper;
@@ -18,6 +21,7 @@ import com.example.service.ClientService;
 import com.example.service.CreditService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -313,10 +317,58 @@ public class TellerMenu {
                 System.out.println("Merci de Fournir un compte Credit");
             }
         } while (!CheckAccountCredit);
-        if (creditService.checkCreditLate(accountNumber));
-        {
-            System.out.println("Demande Credit Refusé");
+
+        System.out.println("Entrer Montant De Crédit :");
+        BigDecimal montant = this.scanner.nextBigDecimal();
+        this.scanner.nextLine();
+
+        System.out.println("La Jusitification Du Crédit :");
+        String justification = this.scanner.nextLine();
+
+        BigDecimal divisor = new BigDecimal("12");
+        BigDecimal resultMonthlyamount = montant.divide(divisor, 2, RoundingMode.HALF_UP);
+
+        BigDecimal totalCreditSum = this.creditService.CalculateCreditClient(accountNumber);
+        int id = this.accountService.getIdClientByAccountId(accountNumber);
+        BigDecimal salaire = this.clientService.getSalaireById(id);
+
+        BigDecimal sixtyPercent = salaire.multiply(BigDecimal.valueOf(0.6));
+        BigDecimal resultSallaire = salaire.subtract(sixtyPercent);
+
+        if(montant.compareTo(resultSallaire) > 0) {
+            System.out.println("Votre salaire n'est pas suffisant pour ce crédit");
+            return;
         }
+
+        if(this.creditService.checkCreditLate(accountNumber)) {
+            System.out.println("Demande Credit Refusé");
+            return;
+        }
+
+        if(resultSallaire.compareTo(totalCreditSum) < 0) {
+            System.out.println("Vous n'êtes pas eligible pour prendre ce crédit!");
+            return;
+        }
+        AccountDTO accountDTO = AccountMapper.TODTO(this.accountService.getAccountByNumber(accountNumber));
+
+        CreditDTO creditDTO = new CreditDTO();
+        creditDTO.setAmount(montant);
+        creditDTO.setMonthlyAmount(resultMonthlyamount);
+        creditDTO.setJustification(justification);
+        creditDTO.setCreditType(CreditType.SIMPLE);
+        creditDTO.setCreditStatus(CreditStatus.ACTIVE);
+        creditDTO.setDuree(12);
+        creditDTO.setAccount(accountDTO);
+        creditDTO.setCreated_at(Timestamp.valueOf(LocalDateTime.now()));
+        creditDTO.setUpdated_at(Timestamp.valueOf(LocalDateTime.now()));
+
+        this.creditController.createCredit(creditDTO);
+
+        System.out.println("Votre Demande De Crédit Avec succées");
+
+
+
+
 
 
     }

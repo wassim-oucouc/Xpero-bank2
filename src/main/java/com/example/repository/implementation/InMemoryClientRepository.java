@@ -5,6 +5,7 @@ import com.example.entity.Client;
 import com.example.repository.ClientRepository;
 
 import javax.xml.transform.Result;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -175,6 +176,29 @@ public List<Client> getAllClients()
     catch (SQLException e)
     {
         throw  new RuntimeException(e.getMessage());
+    }
+}
+
+public BigDecimal getSallaireClientById(int id)
+{
+    try
+    {
+        String sqlQuery = "SELECT salaire FROM clients WHERE id = ?";
+        PreparedStatement prepare = this.connection.prepareStatement(sqlQuery);
+        prepare.setInt(1,id);
+       ResultSet resultSet =  prepare.executeQuery();
+       if(resultSet.next())
+       {
+           return resultSet.getBigDecimal("salaire");
+       }
+       else
+       {
+           return null;
+       }
+    }
+    catch (SQLException e)
+    {
+        throw new RuntimeException(e.getMessage());
     }
 }
 

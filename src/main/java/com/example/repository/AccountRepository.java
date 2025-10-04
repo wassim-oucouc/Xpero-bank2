@@ -22,4 +22,5 @@ public interface AccountRepository {
     public BigDecimal getBalanceByAccountNumber(String accont_number);
     public Boolean subBalanceByIdAccount(String account_id,BigDecimal montant);
     public Boolean checkAccountTypeByNumber(String account_number);
+    public Integer getIdClientByAccountId(String account_id);
 }

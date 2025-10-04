@@ -23,9 +23,8 @@ public class CreditMapper {
         creditCreated.setCreditType(credit.getCreditType());
         creditCreated.setAccount(AccountMapper.TODTO(credit.getAccount()));
         creditCreated.setAmount(credit.getAmount());
+        creditCreated.setMonthlyAmount(credit.getMonthlyAmount());
         creditCreated.setDuree(credit.getDuree());
-        creditCreated.setFeeRule(credit.getFeeRule());
-        creditCreated.setTaux(credit.getTaux());
         creditCreated.setCreated_at(credit.getCreated_at());
         creditCreated.setUpdated_at(credit.getUpdated_at());
 
@@ -39,12 +38,12 @@ public class CreditMapper {
         credit.setId(creditDTO.getId());
         credit.setAccount(this.accountMapper.ToEntity(creditDTO.getAccount()));
         credit.setAmount(creditDTO.getAmount());
+        credit.setMonthlyamount(creditDTO.getMonthlyAmount());
         credit.setDuree(creditDTO.getDuree());
         credit.setCreditType(creditDTO.getCreditType());
         credit.setFeeRule(creditDTO.getFeeRule());
         credit.setIs_active(creditDTO.getIs_active());
         credit.setJustification(creditDTO.getJustification());
-        credit.setTaux(creditDTO.getTaux());
         credit.setCreditStatus(creditDTO.getCreditStatus());
         credit.setCreated_at(creditDTO.getCreated_at());
 

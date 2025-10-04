@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.entity.Client;
 import com.example.repository.ClientRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ClientService {
@@ -37,6 +38,11 @@ public class ClientService {
     public Client getClientById(int id)
     {
         return this.clientRepository.getClientById(id);
+    }
+
+    public BigDecimal getSalaireById(int id)
+    {
+        return this.clientRepository.getSallaireClientById(id);
     }
 
 
