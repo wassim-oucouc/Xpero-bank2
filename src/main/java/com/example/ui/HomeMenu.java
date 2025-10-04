@@ -18,12 +18,14 @@ public class HomeMenu {
     public final Scanner scanner;
     public UserService userService;
     public TellerMenu tellerMenu;
+    public ManagerMenu managerMenu;
 
 
-    public HomeMenu(Scanner scanner, UserService userService,TellerMenu tellerMenu) {
+    public HomeMenu(Scanner scanner, UserService userService,TellerMenu tellerMenu,ManagerMenu managerMenu) {
         this.scanner = scanner;
         this.userService = userService;
         this.tellerMenu = tellerMenu;
+        this.managerMenu = managerMenu;
     }
 
 
@@ -92,16 +94,16 @@ public class HomeMenu {
             case 7:
                 this.tellerMenu.closeAccount();
                 break;
-            case 8 :
+            case 8:
                 this.tellerMenu.Deposit();
                 break;
-            case 9 :
+            case 9:
                 this.tellerMenu.Withdraw();
                 break;
-            case 10 :
+            case 10:
                 this.tellerMenu.Transfer();
                 break;
-            case 11 :
+            case 11:
                 this.tellerMenu.creditApplication();
                 break;
 
@@ -111,6 +113,17 @@ public class HomeMenu {
 
 
     public void managerMenu() {
+        System.out.println("1. Acceptation Credit");
+
+        int InputChoix = this.scanner.nextInt();
+        String forskip = this.scanner.nextLine();
+
+        switch(InputChoix)
+        {
+            case 1 :
+                this.managerMenu.ApproveCredit();
+                break;
+        }
 
     }
 
@@ -139,17 +152,26 @@ public class HomeMenu {
 
             if (user != null) {
 
+
                 switch (user.getRole().name()) {
                     case "ADMIN":
+                        System.out.println(" Connecté en tant que : " + user.getName() + " " + user.getLastname());
+                        System.out.println("============menu============");
                         this.adminMenu();
                         break;
                     case "TELLER":
+                        System.out.println(" Connecté en tant que : " + user.getName() + " " + user.getLastname());
+                        System.out.println("============menu============");
                         this.tellerMenu();
                         break;
                     case "MANAGER":
+                        System.out.println(" Connecté en tant que : " + user.getName() + " " + user.getLastname());
+                        System.out.println("============menu============");
                         this.managerMenu();
                         break;
                     case "AUDITOR":
+                        System.out.println(" Connecté en tant que : " + user.getName() + " " + user.getLastname());
+                        System.out.println("============menu============");
                         this.auditorMenu();
                         break;
                 }

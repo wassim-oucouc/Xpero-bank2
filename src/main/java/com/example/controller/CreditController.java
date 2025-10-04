@@ -24,4 +24,9 @@ public class CreditController {
       creditService.createCredit(credit);
      return  this.creditMapper.ToDTO(credit);
     }
+
+    public void acceptationCredit(String account_id)
+    {
+        this.creditService.acceptCreditByAccountId(account_id);
+    }
 }

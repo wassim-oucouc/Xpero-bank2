@@ -31,4 +31,9 @@ public class CreditService {
     {
         return this.creditRepository.calculateTotalMonthlyAmountByAccount(account_id);
     }
+
+    public Boolean acceptCreditByAccountId(String account_id)
+    {
+        return this.creditRepository.acceptCreditByAccountId(account_id);
+    }
 }
