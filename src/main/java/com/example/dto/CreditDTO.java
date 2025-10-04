@@ -12,8 +12,18 @@ public class CreditDTO {
 
     public Integer id;
     public BigDecimal amount;
+    public BigDecimal monthlyAmount;
     public Integer duree;
     public Float Taux;
+
+    public BigDecimal getMonthlyAmount() {
+        return monthlyAmount;
+    }
+
+    public void setMonthlyAmount(BigDecimal monthlyAmount) {
+        this.monthlyAmount = monthlyAmount;
+    }
+
     public String justification;
     public Boolean is_active;
     public CreditType creditType;

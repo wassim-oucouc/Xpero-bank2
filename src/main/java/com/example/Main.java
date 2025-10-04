@@ -37,7 +37,7 @@ public class Main {
         CreditService creditService = new CreditService(creditRepository);
         CreditMapper creditMapper = new CreditMapper(accountMapper);
         CreditController creditController = new CreditController(creditService,creditMapper);
-        TellerMenu tellerMenu = new TellerMenu(clientController,scanner,accountService,accountController,clientService,clientMapper,accountMapper,transactionController,creditController);
+        TellerMenu tellerMenu = new TellerMenu(clientController,scanner,accountService,accountController,clientService,clientMapper,accountMapper,transactionController,creditController,creditService);
 
 
         HomeMenu homeMenu =  new HomeMenu(scanner,userService,tellerMenu);

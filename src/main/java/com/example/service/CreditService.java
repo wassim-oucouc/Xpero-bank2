@@ -3,6 +3,8 @@ package com.example.service;
 import com.example.entity.Credit;
 import com.example.repository.CreditRepository;
 
+import java.math.BigDecimal;
+
 public class CreditService {
 
 
@@ -23,5 +25,10 @@ public class CreditService {
     public Boolean checkCreditLate(String account_id)
     {
         return this.creditRepository.checkCreditLate(account_id);
+    }
+
+    public BigDecimal CalculateCreditClient(String account_id)
+    {
+        return this.creditRepository.calculateTotalMonthlyAmountByAccount(account_id);
     }
 }

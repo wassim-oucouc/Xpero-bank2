@@ -109,6 +109,7 @@ CREATE TABLE Fee_rules (
 CREATE TABLE Credits(
                         id SERIAL PRIMARY KEY,
                         amount DECIMAL(15,2) NOT NULL,
+                        monthlyamount DECIMAL NOT NULL,
                         duree INTEGER NOT NULL,
                         taux FLOAT NOT NULL,
                         fee_rule_id INTEGER,

@@ -105,6 +105,29 @@ public class InMemoryAccountRepository implements AccountRepository {
         }
     }
 
+    public Integer getIdClientByAccountId(String account_id)
+    {
+        try
+        {
+            String sqlQuery = "SELECT client_id from accounts where id = ?";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1,account_id);
+           ResultSet resultSet =  preparedStatement.executeQuery();
+           if(resultSet.next())
+           {
+               return resultSet.getInt("client_id");
+           }
+           else
+           {
+               return null;
+           }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
         try {
@@ -169,7 +192,7 @@ public class InMemoryAccountRepository implements AccountRepository {
     {
         try
         {
-            String sqlQuery = "SELECT * FROM accounts WHERE type_id = 1 AND id = ?";
+            String sqlQuery = "SELECT * FROM accounts WHERE type_id = 3 AND id = ?";
             PreparedStatement preparedStatement = this.connection.prepareStatement(sqlQuery);
             preparedStatement.setString(1,account_number);
             ResultSet resultSet = preparedStatement.executeQuery();

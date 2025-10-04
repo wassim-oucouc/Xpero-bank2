@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import com.example.dto.AccountDTO;
 import com.example.enums.CreditStatus;
 import com.example.enums.CreditType;
 
@@ -10,6 +11,7 @@ public class Credit {
 
     public Integer id;
     public BigDecimal amount;
+    public BigDecimal monthlyAmount;
     public Integer duree;
     public Float Taux;
     public String justification;
@@ -20,6 +22,22 @@ public class Credit {
     public Timestamp created_at;
     public Timestamp updated_at;
 
+    public BigDecimal getMonthlyAmount() {
+        return monthlyAmount;
+    }
+
+    public void setMonthlyAmount(BigDecimal monthlyAmount) {
+        this.monthlyAmount = monthlyAmount;
+    }
+
+    public BigDecimal getMonthlyamount() {
+        return monthlyAmount;
+    }
+
+    public void setMonthlyamount(BigDecimal monthlyamount) {
+        this.monthlyAmount = monthlyamount;
+    }
+
     public Float getTaux() {
         return Taux;
     }
@@ -28,10 +46,11 @@ public class Credit {
         Taux = taux;
     }
 
-    public Credit(Integer id, BigDecimal amount, Integer duree, Fee_rule feeRule, Boolean is_active, String justification, CreditType creditType, Account account, CreditStatus creditStatus, Timestamp created_at, Timestamp updated_at) {
+    public Credit(Integer id, BigDecimal amount,BigDecimal monthlyamount,Integer duree, Fee_rule feeRule, Boolean is_active, String justification, CreditType creditType, Account account, CreditStatus creditStatus, Timestamp created_at, Timestamp updated_at) {
         this.id = id;
         this.amount = amount;
         this.duree = duree;
+        this.monthlyAmount = monthlyamount;
         this.feeRule = feeRule;
         this.is_active = is_active;
         this.justification = justification;
